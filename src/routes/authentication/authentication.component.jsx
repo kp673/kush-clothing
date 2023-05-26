@@ -4,6 +4,7 @@ import SignIn from "../../components/sign-in/sign-in.component";
 import './authentication.styles.scss'
 
 const Authentication = () => {
+  
   // Using redirect insted of popup.
   // useEffect(() => {
   //   async function fetchRedirectResult() {
