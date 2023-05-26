@@ -15,8 +15,10 @@ import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+const API_KEY = process.env.REACT_APP_FIREBASE_API_KEY  
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCsmCxnLn8Q4f8wo_l4s1Ey6E2FGv9qWw4",
+  apiKey: `${API_KEY}`,
   authDomain: "kush-clothing-db.firebaseapp.com",
   projectId: "kush-clothing-db",
   storageBucket: "kush-clothing-db.appspot.com",
