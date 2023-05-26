@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { UserContext } from '../../contexts/user.context';
 import { createAuthUserwithSignUp, createUserDocument } from '../../utils/firebase/firebase.utils';
-import Input from '../input/input.component';
 import Button from '../button/button.component';
-import './sign-up.styles.scss'
+import Input from '../input/input.component';
+import './sign-up.styles.scss';
 
 const defaultFormFields = {
   displayName: "",
@@ -15,12 +16,14 @@ const SignUp = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPass } = formFields;
 
+  const { setCurrentUser } = useContext(UserContext);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormFields({...formFields, [name]: value})
-
   }
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPass) {
@@ -29,14 +32,18 @@ const SignUp = () => {
     }
     try {
       const { user } = await createAuthUserwithSignUp(email, password);
-      const userDocRef = await createUserDocument(user,{displayName})
-      console.log(userDocRef)
+      await createUserDocument(user,{displayName})
+      setCurrentUser(user)
       setFormFields(defaultFormFields)
+
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         alert("Email already in user. Please try to sign in instead")
+      } else if (error.code === 'auth/weak password') {
+        alert("Password too weak. At least 6 charchters required.")
+      } else {
+        console.error("user creation encontered an error", error);
       }
-      console.error("user creation encontered an error", error);
     }
     
   }
