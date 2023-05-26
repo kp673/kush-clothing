@@ -33,7 +33,7 @@ const SignUp = () => {
       console.log(userDocRef)
       setFormFields(defaultFormFields)
     } catch (error) {
-      if (error.code == 'auth/email-already-in-use') {
+      if (error.code === 'auth/email-already-in-use') {
         alert("Email already in user. Please try to sign in instead")
       }
       console.error("user creation encontered an error", error);
