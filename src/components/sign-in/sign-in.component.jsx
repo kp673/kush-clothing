@@ -31,7 +31,7 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { user } = await signIn(email, password);
+      await signIn(email, password);
       setFormFields(defaultFormFields);
     } catch (error) {
         switch (error.code) {
