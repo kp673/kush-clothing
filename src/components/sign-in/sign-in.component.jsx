@@ -2,7 +2,9 @@ import { useContext, useState } from "react";
 import {
   createUserDocument,
   signIn,
-  signInWithGooglePopup
+  signInWithGooglePopup,
+  signInWithGithubPopup,
+  signInWithFacebookPopup
 } from "../../utils/firebase/firebase.utils";
 
 import { UserContext } from "../../contexts/user.context";
@@ -56,6 +58,19 @@ const SignIn = () => {
   const SignInWithGoogle = async () => {
     const {user} = await signInWithGooglePopup();
     await createUserDocument(user)
+    setCurrentUser(user)
+  }
+
+  const signInWithGithub = async () => {
+    const {user} = await signInWithGithubPopup();
+    await createUserDocument(user)
+    setCurrentUser(user)
+  }
+
+  const signInWithFacebook = async () => {
+    const { user } = await signInWithFacebookPopup();
+    await createUserDocument(user)
+    setCurrentUser(user)
   }
 
   return (
@@ -82,9 +97,22 @@ const SignIn = () => {
         <div className="buttons-container">
           <Button type="submit">Sign In</Button>
           <Button type="button" buttonType="google" onClick={SignInWithGoogle}>
-            Google Sign In
+            Google
           </Button>
         </div>
+        <div className="buttons-container">
+          <Button
+            type="button"
+            buttonType="google"
+            onClick={signInWithFacebook}>
+            Facebook
+          </Button>
+          <Button
+            type="button"
+            onClick={signInWithGithub}>
+            Github
+          </Button>
+        </div>  
       </form>
     </div>
   );

@@ -2,6 +2,8 @@
 import { initializeApp } from "firebase/app";
 import {
   GoogleAuthProvider,
+  GithubAuthProvider,
+  FacebookAuthProvider,
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
@@ -30,14 +32,23 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
+const gitHubProvider = new GithubAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
   prompt: "select_account"
+});
+facebookProvider.setCustomParameters({
+  'display': 'popup'
 });
 
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider)
+export const signInWithGithubPopup = () => signInWithPopup(auth, gitHubProvider);
+export const signInWithFacebookPopup = () => signInWithPopup(auth, facebookProvider)
+
 
 
 export const db = getFirestore()
