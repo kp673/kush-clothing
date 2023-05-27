@@ -1,13 +1,11 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
-  createUserDocument,
   signIn,
   signInWithGooglePopup,
   signInWithGithubPopup,
   signInWithFacebookPopup
 } from "../../utils/firebase/firebase.utils";
 
-import { UserContext } from "../../contexts/user.context";
 import Button from "../button/button.component";
 import Input from "../input/input.component";
 
@@ -24,9 +22,6 @@ const defaultFormFields = {
 const SignIn = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
-
-  const { setCurrentUser } = useContext(UserContext)
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -37,7 +32,6 @@ const SignIn = () => {
     e.preventDefault();
     try {
       const { user } = await signIn(email, password);
-      setCurrentUser(user)
       setFormFields(defaultFormFields);
     } catch (error) {
         switch (error.code) {
@@ -47,6 +41,9 @@ const SignIn = () => {
           case 'auth/user-not-found':
             alert("No account associatedd with this email")
             break;
+          case 'auth/account-exists-with-different-credential':
+            alert("account associated with a diffrent provider")
+            break
           default:
             console.error("Sign in failed", error)
             break;
@@ -56,21 +53,18 @@ const SignIn = () => {
   }
 
   const SignInWithGoogle = async () => {
-    const {user} = await signInWithGooglePopup();
-    await createUserDocument(user)
-    setCurrentUser(user)
+    await signInWithGooglePopup();
+  
   }
 
   const signInWithGithub = async () => {
-    const {user} = await signInWithGithubPopup();
-    await createUserDocument(user)
-    setCurrentUser(user)
+    await signInWithGithubPopup();
+
   }
 
   const signInWithFacebook = async () => {
-    const { user } = await signInWithFacebookPopup();
-    await createUserDocument(user)
-    setCurrentUser(user)
+    await signInWithFacebookPopup();
+    
   }
 
   return (
