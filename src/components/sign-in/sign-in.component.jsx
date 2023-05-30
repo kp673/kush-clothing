@@ -87,7 +87,8 @@ const SignIn = () => {
             onChange={handleChange}
             name='password'
             value={password}
-        />
+            autocomplete="on"
+          />
         <ButtonsContainer>
           <Button type="submit">Sign In</Button>
           <Button type="button" buttonType="google" onClick={SignInWithGoogle}>

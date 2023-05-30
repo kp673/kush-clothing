@@ -72,6 +72,7 @@ const SignUp = () => {
           onChange={handleChange}
           name='password'
           value={password}
+          autocomplete="on"
         />
         <Input
           label= "Confirm Password"
@@ -80,6 +81,7 @@ const SignUp = () => {
           onChange={handleChange}
           name='confirmPass'
           value={confirmPass}
+          autocomplete="on"
         />
 
         <Button type="submit">Sign Up</Button>
