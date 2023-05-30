@@ -1,9 +1,9 @@
 import { useState } from "react";
 import {
   signIn,
-  signInWithGooglePopup,
+  signInWithFacebookPopup,
   signInWithGithubPopup,
-  signInWithFacebookPopup
+  signInWithGooglePopup
 } from "../../utils/firebase/firebase.utils";
 
 import Button from "../button/button.component";
