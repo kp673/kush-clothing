@@ -1,12 +1,13 @@
-import './category-preview.styles.scss'
 import ProductCard from '../product-card/product-card.component';
-const CategoryPreview = ({title, products}) => {
+import { CategoryPreviewContainer, Preview, Title } from './category-preview.styles';
+
+const CategoryPreview = ({ title, products }) => {
   return (
-    <div className='category-preview-container'>
+    <CategoryPreviewContainer>
       <h2>
-        <span>{title[0].toUpperCase()+title.substring(1)}</span>
+        <Title>{title[0].toUpperCase()+title.substring(1)} &#10095;</Title>
       </h2>
-      <div className='preview'>
+      <Preview>
         {
           products
             .filter((_, idx) => idx < 4)
@@ -14,9 +15,9 @@ const CategoryPreview = ({title, products}) => {
               <ProductCard key={product.id} product={product} />
             )
         }
-      </div>
+      </Preview>
 
-    </div>
+    </CategoryPreviewContainer>
   );
 }
 
