@@ -1,9 +1,10 @@
 
 import CategoryItem from "../category-item/category-item.component";
 import { CategoriesContainer } from "./directory.styles";
+import { categories } from "./categories";
 
-const Directory = ({categories}) => {
-
+const Directory = () => {
+  
   return (
     <CategoriesContainer>
       {categories.map((category) => (
