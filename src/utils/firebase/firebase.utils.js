@@ -28,7 +28,7 @@ import {
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-const API_KEY = process.env.REACT_APP_FIREBASE_API_KEY  
+const API_KEY = 'AIzaSyCsmCxnLn8Q4f8wo_l4s1Ey6E2FGv9qWw4'
 
 const firebaseConfig = {
   apiKey: `${API_KEY}`,
