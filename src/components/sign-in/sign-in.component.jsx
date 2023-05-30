@@ -8,8 +8,8 @@ import {
 
 import Button from "../button/button.component";
 import Input from "../input/input.component";
+import { ButtonsContainer, SignInContainer } from "./sign-in.styles";
 
-import './sign-in.styles.scss';
 
 
 
@@ -68,7 +68,7 @@ const SignIn = () => {
   }
 
   return (
-    <div className='sign-in-container'>
+    <SignInContainer>
       <h2>I already have an account</h2>
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
@@ -88,13 +88,13 @@ const SignIn = () => {
             name='password'
             value={password}
         />
-        <div className="buttons-container">
+        <ButtonsContainer>
           <Button type="submit">Sign In</Button>
           <Button type="button" buttonType="google" onClick={SignInWithGoogle}>
             Google
           </Button>
-        </div>
-        <div className="buttons-container">
+        </ButtonsContainer>
+        <ButtonsContainer>
           <Button
             type="button"
             buttonType="google"
@@ -106,9 +106,9 @@ const SignIn = () => {
             onClick={signInWithGithub}>
             Github
           </Button>
-        </div>  
+        </ButtonsContainer>  
       </form>
-    </div>
+    </SignInContainer>
   );
 }
 export default SignIn;
