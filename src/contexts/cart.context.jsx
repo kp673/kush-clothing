@@ -1,5 +1,4 @@
-import { createContext, useEffect, useMemo, useState } from "react";
-
+import { createContext, useReducer } from "react";
 
 const addCartItem = (cartItems, product) => {
   const index = cartItems.find((item) => item.id === product.id)
@@ -28,6 +27,7 @@ const removeCartItem = (cartItems, cartItem) => {
 const removeProduct = (cartItems, product) => {
   return cartItems.filter(item => item.id !== product.id)
 }
+
 export const CartContext = createContext({
   cartDropdown: false,
   setCartDropdown: () => {},
@@ -39,37 +39,80 @@ export const CartContext = createContext({
   totalPrice: 0,
 })
 
-export const CartProvider = ({children}) => {
-  const [cartDropdown, setCartDropdown] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
+export const CartActions = {
+  setCartDropdown: 'SET_CART_DROPDOWN',
+  setCartItems: 'SET_CART_ITEMS'
+}
 
-  useEffect(() => {
-    const newTotalPrice = cartItems.reduce(
+const INITIAL_STATE = {
+  cartDropdown: false,
+  cartItems: [],
+  total: 0,
+  totalPrice: 0
+}
+
+const cartReducer = (state, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case CartActions.setCartDropdown:
+      return {
+        ...state,
+        cartDropdown: payload
+      }  
+    case CartActions.setCartItems:
+      return {
+        ...state,
+        ...payload
+      }
+    default:
+      throw new Error(`Unhandled type ${type} in cartReducer`)
+  }
+}
+
+export const CartProvider = ({children}) => {
+  const [{cartItems, cartDropdown, total, totalPrice}, dispatch] = useReducer(cartReducer, INITIAL_STATE);
+  
+  const updatePayloads = (newCartItems) => {
+    const newTotalPrice = newCartItems.reduce(
       (total, item) => total + item.quantity * item.price,
       0
     );
-    setTotalPrice(newTotalPrice)
-  },[cartItems]);
+    const newTotal = newCartItems.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch({
+      type: CartActions.setCartItems,
+      payload: {
+        totalPrice: newTotalPrice,
+        total: newTotal,
+        cartItems: newCartItems
+      }
+    })
+  }
+
+  const setCartDropdown = (bool) => {
+    dispatch({
+      type: CartActions.setCartDropdown, 
+      payload: bool
+    })
+  }
   const addItemToCart = (product) => {
-    setTotal(total+1)
-    setCartItems(addCartItem(cartItems, product))
+    const newCartItems = addCartItem(cartItems, product);
+    updatePayloads(newCartItems);
   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const removeItemFromCart = (cartItem) => {
-    setTotal(total-1)
-    setCartItems(removeCartItem(cartItems, cartItem))
+    const newCartItems = removeCartItem(cartItems, cartItem);
+    updatePayloads(newCartItems);
   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps 
   const removeProductFromCart = (product) => {
-    setTotal(total - product.quantity)
-    setCartItems(removeProduct(cartItems,product))
+    const newCartItems = removeProduct(cartItems, product);
+    updatePayloads(newCartItems);
   }
 
-  const value = useMemo(() => ({ cartDropdown, setCartDropdown, cartItems, addItemToCart, removeItemFromCart,removeProductFromCart,total, totalPrice}), [cartDropdown, setCartDropdown, cartItems, addItemToCart, removeItemFromCart, removeProductFromCart,total, totalPrice]);
+  const value = { cartDropdown, setCartDropdown, cartItems, addItemToCart, removeItemFromCart,removeProductFromCart,total, totalPrice}
   
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 
