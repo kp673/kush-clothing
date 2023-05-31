@@ -1,5 +1,4 @@
 import { createContext, useEffect, useReducer } from "react";
-// import { useNavigate } from "react-router-dom";
 import { createUserDocument, onAuthStateChangedListner } from "../utils/firebase/firebase.utils";
 
 //actual value to access
@@ -31,21 +30,18 @@ const userReducer = (state, action) => {
 
 export const UserProvider = ({ children }) => {
   const [ {currentUser}, dispatch] = useReducer(userReducer, INITIAL_STATE);
-  // const navigate = useNavigate();
   const setCurrentUser = ((user) => {
     dispatch({ type: USER_ACTIONS.setCurrentUser, payload: user })
   })
   const value = {currentUser, setCurrentUser}
-
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListner((user) => {
       if (user) {
         createUserDocument(user)
       }
       setCurrentUser(user);
-
+      return unsubscribe;
     });
-    return unsubscribe;
-  });
+  })
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
