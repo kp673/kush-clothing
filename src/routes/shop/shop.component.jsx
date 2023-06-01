@@ -15,7 +15,7 @@ const Shop = () => {
     }
     getCategoriesMap();
   }, [])
- 
+
   return (
     <Routes>
       <Route index element={<CategoriesPreview/>} />
